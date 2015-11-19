@@ -26,6 +26,7 @@ import com.skyfishjy.library.RippleBackground;
 public class ScrollingActivity extends AppCompatActivity implements SensorEventListener {
 
     RippleBackground rippleBackground;
+    ImageView imageView;
     MediaPlayer mediaPlayer;
     private SensorManager sensorManager;
     Vibrator v;
@@ -46,7 +47,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         setSupportActionBar(toolbar);
 
         rippleBackground=(RippleBackground)findViewById(R.id.content);
-        ImageView imageView=(ImageView)findViewById(R.id.centerImage);
+        imageView=(ImageView)findViewById(R.id.centerImage);
         rippleBackground.startRippleAnimation();
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +86,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
 
         notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        watermark=0.22f;
+        watermark=1.52f;
     }
 
     @Override
@@ -145,8 +146,11 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
             if(!r.isPlaying())
             {
                 r.play();
-                v.vibrate(pattern,-1);
+                v.vibrate(pattern, 0);
+                rippleBackground.startRippleAnimation();
+                imageView.setImageResource(R.drawable.nuke);
             }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -159,7 +163,11 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
                 {
                     r.stop();
                     v.cancel();
+                    rippleBackground.stopRippleAnimation();
+                    imageView.setImageResource(R.drawable.peace);
                 }
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
