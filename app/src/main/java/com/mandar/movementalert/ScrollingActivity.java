@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,7 +29,14 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
     MediaPlayer mediaPlayer;
     private SensorManager sensorManager;
     Vibrator v;
-    long[] pattern = {0, 100, 10};
+    long[] pattern = {0, 100, 100};
+
+    Uri notification;
+    Ringtone r;
+    private boolean update = true;
+    private boolean isStart = true;
+    boolean firstTimeReset = true;
+    private float sxLow, syLow, szLow, sxHi, syHi, szHi, watermark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +83,9 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
 
         v = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
+        notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        watermark=0.22f;
     }
 
     @Override
@@ -104,7 +115,56 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if(isStart==true)
+        {	if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+        {
+            float[] values = event.values;
+            movement(values[0], values[1], values[2], (float) watermark);
+        }
+        }
+    }
 
+    public boolean movement(float a, float b, float c, double d)
+    {
+
+        if (update == true)
+        {
+            sxLow = (float) (a - d);
+            syLow = (float) (b - d);
+            szLow = (float) (c - d);
+            sxHi = (float) (a + d);
+            syHi = (float) (b + d);
+            szHi = (float) (c + d);
+
+            update = false;
+        }
+
+        if ((sxLow > a) || (a > sxHi) || (syLow > b) || (b > syHi) || (szLow > c)  || (c > szHi))
+        {
+            try {
+            if(!r.isPlaying())
+            {
+                r.play();
+                v.vibrate(pattern,-1);
+            }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            try {
+                if(r.isPlaying())
+                {
+                    r.stop();
+                    v.cancel();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
     @Override
