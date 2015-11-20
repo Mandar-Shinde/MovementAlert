@@ -21,16 +21,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.skyfishjy.library.RippleBackground;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 
 public class ScrollingActivity extends AppCompatActivity implements SensorEventListener {
 
-    RippleBackground rippleBackground;
+    InterstitialAd mInterstitialAd;
+
+    RippleBackgroundV2 rippleBackground;
     ImageView imageView;
     MediaPlayer mediaPlayer;
     private SensorManager sensorManager;
     Vibrator v;
-    long[] pattern = {0, 100, 100};
+    long[] pattern = {0, 10, 100};
 
     Uri notification;
     Ringtone r;
@@ -46,7 +51,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rippleBackground=(RippleBackground)findViewById(R.id.content);
+        rippleBackground=(RippleBackgroundV2)findViewById(R.id.content);
         imageView=(ImageView)findViewById(R.id.centerImage);
         rippleBackground.startRippleAnimation();
 
@@ -61,7 +66,9 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 startActivityForResult(intent, 999);
-
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                }
             }
         });
 
@@ -87,7 +94,34 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         watermark=1.52f;
+
+        //
+        // AdMob
+        //
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+
+            }
+        });
+
+        requestNewInterstitial();
+
+
     }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("F71F7F0AADA8E16DFFEC2F4BA6638276")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,7 +180,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
             if(!r.isPlaying())
             {
                 r.play();
-                v.vibrate(pattern, 0);
+              //  v.vibrate(pattern, 0);
                 rippleBackground.startRippleAnimation();
                 imageView.setImageResource(R.drawable.nuke);
             }
@@ -162,11 +196,13 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
                 if(r.isPlaying())
                 {
                     r.stop();
-                    v.cancel();
-                    rippleBackground.stopRippleAnimation();
-                    imageView.setImageResource(R.drawable.peace);
-                }
+                    //v.cancel();
 
+
+                }
+                rippleBackground.stopRippleAnimation();
+                imageView.setImageResource(R.drawable.peace);
+                //
 
             } catch (Exception e) {
                 e.printStackTrace();
