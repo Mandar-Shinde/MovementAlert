@@ -1,135 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_scrolling" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context=".ScrollingActivity">
-
-    <!--<TextView android:layout_width="wrap_content" android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/text_margin" -->
-        <!--android:text="@string/large_text"-->
-        <!--android:id="@+id/textView" />-->
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:src="@drawable/ic_launcher"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_gravity="center" />-->
-
-<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling">
+
     <RelativeLayout
-        android:id="@+id/fl1"
-
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-
-        <com.mandar.movementalert.RippleBackgroundV2
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="325dp"
-            android:id="@+id/content"
-            app:rb_color="#F44336"
-            app:rb_radius="32dp"
-            app:rb_rippleAmount="3"
-            app:rb_duration="2000"
-            app:rb_scale="5"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/centerImage"
-                android:src="@drawable/nuke"
-                />
-        </com.mandar.movementalert.RippleBackgroundV2>
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/imageView"
-
-            android:src="@drawable/touch"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/fl2"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-
-        <android.support.design.widget.FloatingActionButton android:id="@+id/fabring"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_anchor="@id/app_bar"
-            android:layout_gravity="left|bottom"  android:src="@android:drawable/ic_popup_reminder"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Ringtone"
-            android:id="@+id/textView3"
-            android:layout_centerVertical="true"
-            android:layout_alignLeft="@+id/fabring"
-            android:layout_alignStart="@+id/fabring" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start"
-            android:id="@+id/button"
-            android:layout_alignTop="@+id/fabring"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp" />
-
-    </RelativeLayout>
+        android:layout_height="match_parent">
 
         <RelativeLayout
-        android:id="@+id/fl3"
-        android:layout_below="@+id/fl1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+            android:id="@+id/fl1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-       >
+            <com.mandar.movementalert.RippleBackgroundV2 xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="335dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="10dp"
+                app:rb_color="#03A9F4"
+                app:rb_duration="2000"
+                app:rb_radius="32dp"
+                app:rb_rippleAmount="5"
+                app:rb_scale="5">
 
-            <TextView
+                <ImageView
+                    android:id="@+id/centerImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/on" />
+            </com.mandar.movementalert.RippleBackgroundV2>
+
+            <RelativeLayout
+                android:id="@+id/fl2"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="271dp">
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
+            </RelativeLayout>
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
-                android:text="Google ads"
-                android:id="@+id/textView2"
-                android:layout_alignParentTop="true"
+                android:id="@+id/imageView"
+                android:layout_alignTop="@+id/content"
                 android:layout_centerHorizontal="true" />
-
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/banner_ad_unit_id"
-                android:layout_below="@+id/textView2"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true">
-            </com.google.android.gms.ads.AdView>
         </RelativeLayout>
-</RelativeLayout>
+
+    </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
