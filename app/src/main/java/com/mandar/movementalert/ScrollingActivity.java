@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -42,7 +44,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
 
     private SensorManager sensorManager;
     Vibrator v;
-    long[] pattern = {0, 10, 100};
+    long[] pattern = { 0,10,500};
 
 
     private boolean update;
@@ -52,6 +54,9 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
     Uri notification;
 
     Ringtone r;
+
+    TextView tv;
+    TextView tv2;
 
     // UI
     AlertDialog.Builder alert;
@@ -94,19 +99,25 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         rippleBackground = (RippleBackgroundV2) findViewById(R.id.content);
         radarimage = (ImageView) findViewById(R.id.centerImage);
        // rippleBackground.startRippleAnimation();
+
+        rippleBackground.setNewRipple(5000);
         radarimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isStart == true) {
-                    // now stop
+                    // next stop
                     isStart=false;
                     update=false;
                     radarimage.setImageResource(R.drawable.on);
+                    UnSetAlarm();
+                    Snackbar.make(view, "Scanning Stopped", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } else {
-                    // now stop
+                    // next start
                     isStart=true;
                     update=true;
+                    rippleBackground.stopRippleAnimation();
                     radarimage.setImageResource(R.drawable.off);
+                    Snackbar.make(view, "Scanning Started", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -153,16 +164,15 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         // Sensor
         //
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 100000);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 10000);
 
         //
         // Default Setting
         //
-        watermark = 1.22f;
+        watermark = 0.95f;
         update=false;
         isStart=false;
         radarimage.setImageResource(R.drawable.on);
-
     }
 //
 //    @Override
@@ -250,8 +260,7 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
             update = false;
         }
 
-
-        if(((sxLow > a) || (a > sxHi) || (syLow > b) || (b > syHi) || (szLow > c) || (c > szHi))) {
+        if(((sxLow > a) || (a > sxHi) || (syLow > b) || (b > syHi) || (szLow > c) || (c > szHi)) && isStart) {
             SetAlarm();
         } else {
             UnSetAlarm();
@@ -264,10 +273,9 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         try {
             if (!r.isPlaying())
                 r.play();
-
-            //  v.vibrate(pattern, 0);
-           // if(!rippleBackground.isRippleAnimationRunning())
-            rippleBackground.startRippleAnimation();
+              v.vibrate( pattern,-1);
+           if(!rippleBackground.isRippleAnimationRunning())
+                rippleBackground.startRippleAnimation();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,6 +287,9 @@ public class ScrollingActivity extends AppCompatActivity implements SensorEventL
         try {
             if (r.isPlaying())
                 r.stop();
+
+            v.cancel();
+            if(rippleBackground.isRippleAnimationRunning())
                 rippleBackground.stopRippleAnimation();
 
         } catch (Exception e) {
